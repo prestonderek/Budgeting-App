@@ -1,0 +1,26 @@
+﻿@model BudgetApp.Models.Budget.Transaction
+
+@{
+    ViewData["Title"] = "Delete Transaction";
+}
+
+<h1 class="mb-4">Delete Transaction</h1>
+
+<div class="alert alert-warning">
+    <h4 class="alert-heading">Are you sure?</h4>
+    <p>
+        You are about to delete this transaction:
+    </p>
+    <ul>
+        <li>Date: @Model.CreatedAt.ToShortDateString()</li>
+        <li>Amount: @Model.Amount.ToString("C")</li>
+        <li>Memo: @Model.Description</li>
+    </ul>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.TransactionId" />
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+

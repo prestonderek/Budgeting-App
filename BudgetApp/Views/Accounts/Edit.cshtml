@@ -1,0 +1,49 @@
+﻿@model BudgetApp.Models.ViewModels.Accounts.AccountEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<h1 class="mb-4">Edit Account</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="AccountId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="AccountName" class="form-label"></label>
+                <input asp-for="AccountName" class="form-control" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AccountType" class="form-label"></label>
+                <select asp-for="AccountType" class="form-select">
+                    <option value="Checking">Checking</option>
+                    <option value="Savings">Savings</option>
+                    <option value="CreditCard">Credit Card</option>
+                </select>
+                <span asp-validation-for="AccountType" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StartingBalance" class="form-label"></label>
+                <input asp-for="StartingBalance" class="form-control" />
+                <span asp-validation-for="StartingBalance" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

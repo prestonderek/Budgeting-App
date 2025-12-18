@@ -1,0 +1,93 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+body {
+    background-color: #f5f5f9;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.btn-primary {
+    background-color: #0b7285;
+    border-color: #0b7285;
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #095a68;
+        border-color: #095a68;
+    }
+
+.card {
+    border-radius: 0.75rem;
+}
+
+h1, h2, h3 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.app-page {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.app-section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 0.5rem;
+}
+
+.dashboard-card-primary {
+    border-left: 4px solid #0b7285;
+}
+
+.dashboard-card-income {
+    border-left: 4px solid #2b8a3e;
+}
+
+.dashboard-card-expense {
+    border-left: 4px solid #c92a2a;
+}

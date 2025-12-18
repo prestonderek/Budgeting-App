@@ -1,0 +1,22 @@
+[
+  {
+    "ContainingType": "BudgetApp.Controllers.CheckingApiController",
+    "Method": "GetMainChecking",
+    "RelativePath": "api/CheckingApi",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "BudgetApp.Models.Api.CheckingSummaryDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  }
+]

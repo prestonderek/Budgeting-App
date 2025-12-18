@@ -1,0 +1,115 @@
+﻿@model IEnumerable<BudgetApp.Models.Services.BankLink>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    ViewData["Title"] = "Bank Connections";
+}
+
+<h1 class="mb-4">Bank Connections</h1>
+
+<div class="mb-3">
+    <button id="connect-bank" class="btn btn-primary">
+        Connect a Bank Account
+    </button>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No bank connections yet.</p>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Provider</th>
+                <th>Institution</th>
+                <th>Connected</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <form id="af-form">@Html.AntiForgeryToken()</form>
+            @foreach (var link in Model)
+            {
+                <tr>
+                    <td>@link.Provider</td>
+                    <td>@(link.InstitutionName ?? "(unknown)")</td>
+                    <td>@link.CreatedAt.ToShortDateString()</td>
+                    <td>
+                        @if (link.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <form asp-action="Sync" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@link.BankLinkId" />
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-outline-primary">
+                                Sync
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    <script>
+        document.getElementById('connect-bank').addEventListener('click', async function () {
+            // 1) Get link_token from server
+            const res = await fetch('@Url.Action("CreateLinkToken", "Bank")');
+            if (!res.ok) {
+                alert('Failed to create link token.');
+                return;
+            }
+            const data = await res.json();
+            const linkToken = data.link_token;
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            // 2) Initialize Plaid Link
+            const handler = Plaid.create({
+                token: linkToken,
+                onSuccess: async function (public_token, metadata) {
+                    // 3) POST public_token to server (hidden form submit)
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '@Url.Action("ExchangePublicToken", "Bank")';
+
+                    const tokenInput = document.createElement('input');
+                    tokenInput.type = 'hidden';
+                    tokenInput.name = 'public_token';
+                    tokenInput.value = public_token;
+                    form.appendChild(tokenInput);
+
+                    // anti-forgery token
+                    const antiForgeryInput = document.createElement('input');
+                    antiForgeryInput.type = 'hidden';
+                    antiForgeryInput.name = '__RequestVerificationToken';
+                    antiForgeryInput.value = token;
+                    form.appendChild(antiForgeryInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                },
+                onExit: function (err, metadata) {
+                    if (err) {
+                        console.error('Plaid Link error', err);
+                    }
+                }
+            });
+
+            handler.open();
+        });
+    </script>
+}
+
+

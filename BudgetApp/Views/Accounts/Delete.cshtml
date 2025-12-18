@@ -1,0 +1,22 @@
+﻿@model BudgetApp.Models.Budget.Account
+
+@{
+    ViewData["Title"] = "Delete Account";
+}
+
+<h1 class="mb-4">Delete Account</h1>
+
+<div class="alert alert-warning">
+    <h4 class="alert-heading">Are you sure?</h4>
+    <p>
+        You are about to delete (or close) the account:
+        <strong>@Model.AccountName (@Model.AccountType)</strong>.
+    </p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.AccountId" />
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+

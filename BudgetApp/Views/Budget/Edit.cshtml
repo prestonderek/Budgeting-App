@@ -1,0 +1,57 @@
+﻿@model BudgetApp.Models.ViewModels.Budget.BudgetEditViewModel
+
+@{
+    ViewData["Title"] = $"Budget - {Model.Month}/{Model.Year}";
+}
+
+<h1 class="mb-4">Budget for @Model.Month/@Model.Year</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Year" />
+    <input type="hidden" asp-for="Month" />
+    <input type="hidden" asp-for="BudgetPeriodId" />
+
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Category</th>
+                <th>Type</th>
+                <th class="text-end">Planned</th>
+                <th class="text-end">Actual</th>
+                <th class="text-end">Difference</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Lines.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model.Lines[i].CategoryName
+                        <input type="hidden" asp-for="Lines[@i].CategoryId" />
+                        <input type="hidden" asp-for="Lines[@i].CategoryName" />
+                        <input type="hidden" asp-for="Lines[@i].CategoryType" />
+                    </td>
+                    <td>@Model.Lines[i].CategoryType</td>
+                    <td class="text-end" style="width: 150px;">
+                        <input asp-for="Lines[@i].BudgetedAmount" class="form-control form-control-sm text-end" />
+                    </td>
+                    <td class="text-end">
+                        @Model.Lines[i].ActualAmount.ToString("C")
+                    </td>
+                    <td class="text-end">
+                        @{
+                            var diff = Model.Lines[i].ActualAmount - Model.Lines[i].BudgetedAmount;
+                            var css = diff > 0 ? "text-danger" : "text-success";
+                        }
+                        <span class="@css">
+                            @diff.ToString("C")
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Save Budget</button>
+</form>
+
